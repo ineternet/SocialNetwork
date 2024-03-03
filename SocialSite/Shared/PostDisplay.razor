@@ -1,0 +1,129 @@
+@if (Post is null)
+{
+    <div class="postdisplay listpostdisplay nointeraction">
+        @if (NotFound ?? false)
+        {
+            <p>This post doesn't exist.</p>
+        }
+        else
+        {
+            <p>...</p>
+        }
+    </div>
+}
+else
+{
+    <div class="postdisplay listpostdisplay @(
+        Inline ?? false ? "" : "nointeraction"
+    )"
+    style="margin-left:@(GetDepth() * 2)rem;"
+    id=@Post?.PostId>
+        @if (Post?.Parent is not null)
+        {
+            <span class="torootbtn" onclick="location.href='post/@Post.Parent.PostId';"
+            title="View parent post">
+                ↖
+            </span>
+        }
+        @if (Post?.Author is not null)
+        {
+            <div class="postuserinfo" onclick="location.href='/user/@Post.Author.UserId';">
+                <img class="userimage" src=@Post.Author.Picture />
+                <div class="postuserinfotext">
+                    <span class="userextname">@Post.Author.DisplayName</span>
+                    <span class="userintname">@@@Post.Author.Username</span>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="postuserinfo">
+                <img/>
+                <div class="postuserinfotext">
+                    <span class="userextname">...</span>
+                    <span class="userintname">...</span>
+                </div>
+            </div>
+        }
+        <div class="postcontent" onclick=@(Inline ?? false ? $"location.href='/post/{Post?.PostId ?? -1}';" : "")>
+            <div class="postcontenttext">
+                @if (Post?.Text is not null)
+                {
+                    <p>@Post.Text</p>
+                }
+            </div>
+            <div class="postcontentmedia">
+                @if (Post?.ContentLocation is not null && Post?.ContentType is not null)
+                {
+                    switch (Post.ContentType[..5])
+                    {
+                        case "image":
+                            <picture class="postmedia">
+                                <source srcset=@Post.ContentLocation type=@Post.ContentType/>
+                                <img src=@Post.ContentLocation/>
+                            </picture>
+                            break;
+                        case "video":
+                            var quietMode = Inline ?? false;
+                            <BlazoredVideo class="postmedia"
+                                controls>
+                                <source src=@Post.ContentLocation type=@Post.ContentType/>
+                                Video preview is not supported in your browser.
+                            </BlazoredVideo>
+                            break;
+                    }
+                    <br/>
+                }
+            </div>
+        </div>
+        <div class="postbtns">
+            <button class="postbtn postlikebtn" @onclick="ClickLikeBtn">
+                @{
+                    var likecount = Post?.Likes.Count() ?? 0;
+                    var likestr = likecount == 0 ? "" : ""+likecount;
+                }
+                @(Auth.User is null ?
+                    likestr + " 🤍"
+                    : likestr + " " + (Post?.Likes.Any(x => x == Auth.User) ?? false ? "💖" : "🤍") ?? "..."
+                )
+            </button>
+            <button class="postbtn postreplybtn" @onclick="ClickReplyBtn">
+                @{ var ic = Post?.Replies.Count(); }
+                @(ic > 0 ? ic+"" : "") 💬
+            </button>
+            @if (Post?.Author == Auth.User)
+            {
+                <button class="postbtn postdeletebtn" @onclick="ClickDeleteBtn">
+                    🗑️
+                </button>
+            }
+        </div>
+        <div class="makereply">
+            @if (ReplyEnabled)
+            {
+                <EditForm class="edt" Model="@CreatePost" OnValidSubmit="@HandleValidReply">
+                    <DataAnnotationsValidator />
+
+                    <InputTextArea class="composearea" id="text" placeholder="Write a reply" @bind-Value="CreatePost.Text" />
+                    @if (AttachEnabled)
+                    {
+                        <br/>
+                        <InputText id="contenturl" placeholder="Link to media" @bind-Value="CreatePost.ContentLocation" />
+                    }
+                    <div class="textareabtns">
+                        <button type="button" @onclick=ClickAttachBtn>📎</button>
+                        <button type="submit">👉</button>
+                    </div>
+                </EditForm>
+            }
+        </div>
+    </div>
+    @if (Post is not null && GetDepth() < MaxDepth && Post?.Replies is not null)
+    {
+        foreach (var reply in Post.Replies)
+        {
+            <PostDisplay post=@reply inline=@true depth=@(GetDepth()+1) parent=@Post/>
+        }
+    }
+    
+}

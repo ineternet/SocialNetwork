@@ -1,0 +1,89 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <table class="topbar">
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a onclick="location.href='/me';" class="em-fill">
+                    🏠
+                </a>
+            </td>
+            <td>
+                <div class="userbox btn-link" onclick="document.getElementById('userboxmenu').classList.toggle('hidden');">
+                    @if (Auth.User is not null)
+                    {
+                        <img class="userimage" src=@Auth.User.Picture/>
+                        <span>@Auth.User.Username</span>
+                    }
+                    else
+                    {
+                        <img src=""/>
+                        <span>Not logged in</span>
+                    }
+                </div>
+            </td>
+            <td>
+                <a href="About the Social Network Instancing project" target="_blank">About <span class="em-fill">↗</span></a>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+            </td>
+            <td>
+                <div id="userboxmenu" class="usermenu
+                @(ShowMenu ? "" : "hidden")
+                ">
+                    <div class="menubtns">
+                        @if (Auth.User is not null)
+                        {
+                            <div class="menubtn"
+                                onclick="location.href='/me';">
+                                <span class="em-fill">🏠</span> Home
+                            </div>
+                            <div class="menubtn"
+                                onclick="location.href='/user/@Auth.User.UserId';">
+                                <span class="em-fill">👤</span> Profile
+                            </div>
+                            <div class="menuseperator"/>
+                            <div class="menubtn"
+                                onclick="location.href='/logout';">
+                                <span class="em-fill">👋</span> Log out
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="menubtn"
+                                onclick="location.href='/';">
+                                <span class="em-fill">🔐</span> Log in
+                            </div>
+                        }
+                    </div>
+                </div>
+            </td>
+            <td colspan="2">
+            </td>
+        </tr>
+        <tr>
+        </tr>
+    </table>
+    <div class="main">
+        <div class="sidebar">
+            <ul class="sidebarfill">
+                @if (Auth.User is not null)
+                {
+                    <li class="menubtn" onclick="location.href='/me';">
+                        <span class="em-fill">🏠</span> Home
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <div class="content">
+            @Body
+        </div>
+    </div>
+</div>

@@ -1,0 +1,211 @@
+/*
+    Instance variables
+*/
+
+:root {
+    --color-fill: ghostwhite;
+    --color-fill-washed: lightyellow;
+    --color-accent: rgb(54, 90, 211);
+    --color-accent-light: rgb(103, 118, 155);
+    --color-accent-deep: rgb(25, 34, 163);
+    --color-hint: slategray;
+    --color-hint-accented: rgb(111, 152, 194);
+    --color-border-hard: darkgray;
+    --color-border-medium: silver;
+    --color-border-soft: gainsboro;
+
+    --color-form-valid: cornflowerblue;
+    --color-form-warning: goldenrod;
+    --color-form-invalid: tomato;
+
+    --fonts: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+    --top-bar-height: 3.5rem;
+}
+
+/*
+    Helper classes
+*/
+
+/* Force 4 pixel gap */
+.gap-4 {
+    height: 4px;
+}
+
+/* Force 8 pixel gap */
+.gap-8 {
+    height: 8px;
+}
+
+/* UI-Emoji color */
+.em-fill {
+    filter: grayscale() contrast(170%);
+    vertical-align: bottom;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Discreet form elements */
+.silentedit {
+    border: none;
+    background: none;
+    color: var(--color-accent-light);
+    padding: 0;
+}
+
+/* Clickable labels */
+.labelbtn {
+    cursor: pointer;
+    text-decoration: none;
+}
+.labelbtn:hover, .labelbtn.current {
+    text-shadow: 0 0 4px var(--color-hint);
+}
+
+/* Small hint/prompt text */
+.smallprompt {
+    pointer-events: none;
+    font-size: x-small;
+    color: var(--color-hint);
+}
+
+/* Non-link clickable text */
+.fakelink {
+    pointer-events: revert;
+    cursor: pointer;
+    color: var(--color-hint-accented);
+    text-decoration: dotted underline;
+}
+
+/*
+    Site style
+*/
+
+:root, html, body {
+    background: var(--color-fill);
+    font-family: var(--fonts);
+    margin: 0;
+}
+
+form, .edt {
+    width: 100%;
+    position: relative;
+}
+
+a[onclick] {
+    cursor: pointer;
+}
+
+:not(a)>span {
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+textarea, input {
+    font-family: inherit;
+    font-size: inherit;
+    outline: none;
+    border: none;
+    width: inherit;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: none;
+    padding: 8px;
+}
+
+textarea~input {
+    padding: 4px 8px;
+}
+
+ul, ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    margin-left: -1px;
+}
+
+.userinfo {
+    display: flex;
+    overflow: hidden;
+    align-items: center;
+    margin-bottom: 6px;
+    height: 48px;
+}
+
+.unsetbio {
+    font-style: italic;
+    font-weight: 300;
+    opacity: 60%;
+}
+
+.userimage {
+    clip-path: circle();
+    aspect-ratio: 1;
+    height: 48px;
+    object-fit: cover;
+}
+
+.userimageborder {
+    padding: 2px;
+    background: var(--color-accent-deep);
+    clip-path: circle();
+    display: flex;
+    align-items: center;
+}
+
+.userextname {
+    color: var(--color-accent-deep);
+    font-weight: bold;
+}
+
+.userintname {
+    color: var(--color-hint);
+}
+
+a, .btn-link {
+    color: var(--color-accent-light);
+}
+
+.btn-primary {
+    color: var(--color-fill);
+    background-color: var(--color-accent-light);
+    border-color: var(--color-accent);
+}
+
+.valid:not(.silentedit) {
+    outline: 2px solid var(--color-form-valid);
+    outline-offset: -2px;
+}
+
+.invalid {
+    outline: 2px solid var(--color-form-invalid);
+    outline-offset: -2px;
+}
+
+.validation-message {
+    color: var(--color-form-invalid);
+}
+
+#blazor-error-ui {
+    background: var(--color-fill-washed);
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}

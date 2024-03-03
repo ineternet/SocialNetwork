@@ -1,0 +1,14 @@
+@page "/logout"
+
+@inject NavigationManager NavigationManager
+@inject AuthService Auth
+
+<p>...</p>
+
+@code
+{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await Auth.ClearAuthAsync(NavigationManager);
+    }
+}

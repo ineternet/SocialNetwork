@@ -1,0 +1,86 @@
+.userinfo {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.biginfo {
+    margin-bottom: 0;
+}
+
+.userimage {
+    height: 96px;
+}
+
+.userfollowingtext {
+    filter: opacity(70%);
+}
+
+.behindimage {
+    height: calc(calc(560px / 3) - 24px);
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+}
+
+.usernameinfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.userdisplayname {
+    font-weight: bold;
+    font-size: larger;
+}
+
+.behindprofile {
+    margin: -16px 0 0;
+}
+
+.behindimage, .behindtext {
+    padding: 12px;
+    width: calc(100% - 24px);
+}
+
+.behindtext {
+    background-blend-mode: luminosity;
+}
+
+.behindimage {
+    background-color: var(--color-accent-light);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: center;
+    background-position-x: center;
+}
+
+.subpagebtns {
+    display: flex;
+    align-items: center;
+}
+
+.subpagebtns .subpagebtn {
+    flex: 1 0 0;
+    padding: 0.5rem 0;
+}
+
+.subpagebtn {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 10%);
+    cursor: pointer;
+}
+
+.subpagebtn.current {
+    background-color: rgba(0, 0, 0, 14%);
+}
+
+.subpagebtn:hover {
+    background-color: rgba(0, 0, 0, 20%);
+}
+
+.ptitle {
+    margin: 1.5rem 0 -1rem 12px;
+    font-size: small;
+}

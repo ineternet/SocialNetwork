@@ -1,0 +1,32 @@
+version: '3.4'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: "${SQL_SA_PASSWORD}"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+  socialsite:
+    env_file:
+      - .env
+    depends_on:
+      - sqlserver
+    volumes:
+      - ${SSL_DIR:-/ssl}:/ssl:ro
+    environment:
+      SQL_CONNSTR: "Server=sqlserver;Database=socialnetworkbase;User Id=sa;Password=${SQL_SA_PASSWORD};TrustServerCertificate=true;"
+    image: ${DOCKER_REGISTRY-}socialsite
+    ports:
+      - "80:80"
+      - "443:443"
+    build:
+      context: .
+      dockerfile: SocialSite/Dockerfile
+    deploy:
+      resources:
+        reservations:
+          memory: 200M
+        limits:
+          memory: 1G

@@ -1,0 +1,167 @@
+.page {
+    --topbar-height: 56px;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+}
+
+.main {
+    margin-top: var(--topbar-height);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100vw;
+    max-width: 100%;
+    container-type: inline-size;
+    container-name: outbox;
+}
+
+.content {
+    flex: 0 0 560px;
+    max-width: max(30vw, 560px);
+    padding-top: 16px;
+}
+
+.sidebar {
+    flex: 1 1 250px;
+    max-width: 250px;
+    min-width: 0;
+    height: calc(100vh - var(--topbar-height));
+    position: sticky;
+    align-self: flex-start;
+    top: var(--topbar-height);
+    border: solid var(--color-border-hard);
+    border-width: 0 1px;
+    transition: max-width 0.2s ease-in-out;
+    container-type: inline-size;
+    container-name: inbox;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.sidebar span {
+    display: inline;
+}
+
+.sidebar span.em-fill {
+    color: initial;
+    font-size: initial;
+}
+
+@container inbox (max-width: 5em) {
+    .sidebar ul>li {
+        transition: font-size 0.2s ease-in-out;
+        text-align: center;
+        font-size: 0;
+        color: transparent;
+    }
+    .sidebar span.em-fill {
+        color: initial;
+        font-size: initial;
+    }
+}
+
+@container outbox (max-width: calc(560px + 5em)) {
+    .sidebar {
+        border-width: 0 1px 0 0; 
+    }
+}
+
+@container outbox (max-width: 608px) {
+    .sidebar {
+        max-width: 0;
+    }
+}
+
+.topbar {
+    width: 100%;
+    border-spacing: 0;
+    position: fixed;
+    table-layout: fixed;
+    border-collapse: collapse;
+    top: 0;
+    z-index: 4;
+}
+
+.topbar td {
+    padding: 0;
+}
+
+.topbar tr:first-child {
+    height: var(--topbar-height);
+    background-color: var(--color-fill);
+    border-bottom: 1px solid var(--color-border-hard);
+}
+
+.topbar tr:first-child td {
+    text-align: right;
+    width: max-content;
+}
+
+.topbar tr:first-child td:first-child {
+    width: 100%;
+}
+
+.topbar tr:first-child td:last-child {
+    width: 24vw;
+}
+
+.topbar .userbox {
+    height: min-content;
+    padding: 4px 12px;
+    display: inline-flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    min-width: max(10vw, 250px);
+    gap: 12px;
+}
+
+.topbar .userbox:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.topbar a.em-fill {
+    font-size: 125%;
+    text-decoration: none;
+}
+
+.topbar a.em-fill:hover {
+    text-shadow: 2px 2px var(--color-accent-deep);
+}
+
+.usermenu {
+    margin-top: 1px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.usermenu .menubtns {
+    background-color: var(--color-fill);
+    border: 1px solid var(--color-border-hard);
+    min-width: 160px;
+}
+
+.menubtn {
+    padding: 0.8rem;
+    cursor: pointer;
+}
+
+.menuseperator {
+    height: 1px;
+    width: 100%;
+    background-color: var(--color-border-hard);
+}
+
+.menubtn:hover {
+    background-color: rgba(0, 0, 0, 12%);
+}
+
+.usermenu.hidden {
+    display: none;
+}

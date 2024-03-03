@@ -1,0 +1,29 @@
+﻿@page "/"
+@page "/n/{showactionerr}"
+
+<h1>Login page</h1>
+
+@switch (ShowActionErr)
+{
+    case null:
+        break;
+    case "complete":
+        <p class="validation-message">Error processing login request, please try again.</p>
+        break;
+    default:
+        <p class="validation-message">You must be logged in to do that.</p>
+        break;
+}
+
+<EditForm Model="@LoginModel" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText id="userid" placeholder="Email or phone" @bind-Value="LoginModel.LoginIdentifier" />
+    <button type="submit">Log in</button>
+</EditForm>
+
+@if (OutLink is not null)
+{
+    <a href=@OutLink>Complete login</a>
+}

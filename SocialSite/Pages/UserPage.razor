@@ -1,0 +1,128 @@
+@page "/user/{userid}"
+@page "/user/{userid}/{subpage}"
+
+@if (PageUser is null)
+{
+    <p>...</p>
+}
+else
+{
+    <div class="behindprofile">
+        @{ var sp = Subpage ?? "posts"; }
+        <div class="userinfo biginfo">
+            <div class="behindimage" style="background-image: url(@PageUser.Banner);">
+                <div class="userimageborder">
+                    <img class="userimage" src=@PageUser.Picture/>
+                </div>
+            </div>
+            <div class="behindtext">
+                <div class="usernameinfo">
+                    <span class="userdisplayname">@PageUser.DisplayName</span>
+                    <span class="userintname">@@@PageUser.Username</span>
+                </div>
+                <div class="gap-4"/>
+                <span class=@(PageUser.Bio is null ? "userbio unsetbio" : "userbio")>
+                    @(PageUser.Bio ?? "No status set.")
+                </span>
+                <br/>
+                <div class="gap-8"/>
+                <span class="labelbtn userfollowerstext
+                @(sp == "followers" ? "current" : "")
+                " onclick="location.href='/user/@PageUser.UserId/followers';">
+                    @PageUser.Followers.Count() Followers
+                </span>
+                &emsp;
+                <span class="labelbtn userfollowingtext
+                @(sp == "following" ? "current" : "")
+                " onclick="location.href='/user/@PageUser.UserId/following';">
+                    Following @PageUser.Following.Count()
+                </span>
+            </div>
+        </div>
+        <div class="subpagebtns">
+            <div class="subpagebtn
+            @(sp == "posts" ? "current" : "")
+            " id="posts" onclick="location.href='/user/@PageUser.UserId/posts';">
+                <span>Posts</span>
+            </div>
+            <div class="subpagebtn
+            @(sp == "replies" ? "current" : "")
+            " id="replies" onclick="location.href='/user/@PageUser.UserId/replies';">
+                <span>Replies</span>
+            </div>
+        </div>
+    </div>
+    switch (Subpage)
+    {
+        case null or "posts":
+            if (!PostIndex.Any())
+            {
+                <div class="ptitle">This user has no posts to show.</div>
+            }
+            else
+            {
+                <ul class="indexlist">
+                    @foreach(var post in PostIndex)
+                    {
+                        <li>
+                            <PostDisplay post=@post inline=@true maxdepth=@(0)/>
+                        </li>
+                    }
+                </ul>
+            }
+            break;
+        case "replies":
+            if (!ReplyIndex.Any())
+            {
+                <div class="ptitle">This user has never replied to another post.</div>
+            }
+            else
+            {
+                <ul class="indexlist">
+                    @foreach(var reply in ReplyIndex)
+                    {
+                        <li>
+                            <PostDisplay post=@reply inline=@true maxdepth=@(1)/>
+                        </li>
+                    }
+                </ul>
+            }
+            break;
+        case "followers":
+            if (!PageUser.Followers.Any())
+            {
+                <div class="ptitle">This user has no followers.</div>
+            }
+            else
+            {
+                <div class="ptitle">Followed by these users</div>
+                <ul class="userlist">
+                    @foreach(var follower in PageUser.Followers)
+                    {
+                        <li>
+                            <UserDisplay user=@follower/>
+                        </li>
+                    }
+                </ul>
+            }
+            break;
+        case "following":
+            if (!PageUser.Following.Any())
+            {
+                <div class="ptitle">This user is not following anyone.</div>
+            }
+            else
+            {
+                <div class="ptitle">Follows these users</div>
+                <ul class="userlist">
+                    @foreach(var following in PageUser.Following)
+                    {
+                        <li>
+                            <UserDisplay user=@following/>
+                        </li>
+                    }
+                </ul>
+            }
+            break;
+    }
+}

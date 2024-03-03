@@ -1,0 +1,62 @@
+.homepage {
+    margin: 0 0 16px 12px;
+}
+
+.newpost button {
+    padding: 4px;
+    font-weight: bold;
+    width: 2em;
+    height: 2em;
+    border: none;
+    background: none;
+    cursor: pointer;
+    filter: sepia() hue-rotate(187deg) saturate(10);
+}
+
+.newpost .textareabtns {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    display: block;
+    width: max-content;
+}
+
+.newpost input+.textareabtns {
+    bottom: calc(1em + 14px);
+}
+
+.myinfo {
+    position: relative;
+}
+
+.mybio:hover {
+    text-decoration: dotted underline;
+}
+
+.above {
+    position: absolute;
+    bottom: calc(50% + 1em);
+    left: calc(48px + 12px);
+}
+
+.mypicture {
+    cursor: pointer;
+    margin-right: 12px;
+}
+
+.mypicture:hover {
+    filter: brightness(80%);
+}
+
+.mypiceditbtn {
+    position: absolute;
+    z-index: -1;
+    line-height: 48px;
+    width: 48px;
+    text-align: center;
+    pointer-events: none;
+}
+
+.mypicture:hover+.mypiceditbtn {
+    z-index: 1;
+}

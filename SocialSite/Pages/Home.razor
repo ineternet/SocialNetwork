@@ -1,0 +1,63 @@
+@page "/me"
+
+@if (Auth.User is null)
+{
+    <p>...</p>
+}
+else
+{
+    <div class="homepage">
+        <div class="userinfo myinfo">
+            <img class="userimage mypicture" src=@Auth.User.Picture />
+            <span class="em-fill mypiceditbtn">✏️</span>
+            @if (EditingBio)
+            {
+                <span class="smallprompt above fakelink" @onclick=ClickStatusEdit>
+                    Cancel
+                </span>
+            }
+            else
+            {
+                <span class="smallprompt above">
+                    What's on your mind?
+                </span>
+            }
+            @if (EditingBio)
+            {
+                <EditForm class="edt" Model="@UserUpdate" OnValidSubmit="@HandleBioSubmit">
+                    <DataAnnotationsValidator />
+                    <InputText @ref=BioEditText class="silentedit" id="newbiotxt" placeholder="Set new status" @bind-Value="UserUpdate.Bio" />
+                </EditForm>
+            }
+            else
+            {
+                <span class=@(Auth.User.Bio is null ? "userbio mybio unsetbio" : "userbio mybio") @onclick=ClickStatusEdit>
+                    @(Auth.User.Bio ?? "No status set.")
+                </span>
+            }
+        </div>
+        <div class="newpost">
+            <EditForm class="edt" Model="@CreatePost" OnValidSubmit="@HandleValidSubmit">
+                <DataAnnotationsValidator />
+
+                <InputTextArea class="composearea" id="text" placeholder="Make a new post" @bind-Value="CreatePost.Text" />
+                @if (AttachEnabled)
+                {
+                    <InputText id="contenturl" placeholder="Link to media" @bind-Value="CreatePost.ContentLocation" />
+                }
+                <div class="textareabtns">
+                    <button type="button" @onclick=ClickAttachBtn>📎</button>
+                    <button type="submit">👉</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+    <ul class="indexlist">
+        @foreach(var post in PostIndex)
+        {
+            <li>
+                <PostDisplay post=@post inline=@true/>
+            </li>
+        }
+    </ul>
+}

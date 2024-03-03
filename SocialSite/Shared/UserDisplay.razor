@@ -1,0 +1,35 @@
+@if (User is null)
+{
+    <div class="postdisplay listpostdisplay nointeraction">
+        @if (NotFound ?? false)
+        {
+            <p>This user doesn't exist.</p>
+        }
+        else
+        {
+            <p>...</p>
+        }
+    </div>
+}
+else
+{
+    <div class="userlisting" onclick="location.href='/user/@User.UserId';">
+        <div class="userimageborder">
+            <img class="userimage" src=@User.Picture/>
+        </div>
+        <div class="userlistingtext">
+            <div>
+                <span class="userextname inline">@User.DisplayName</span>
+                <span class="userintname inline">@@@User.Username</span>
+            </div>
+            @if (User.Bio is null)
+            {
+                <span class="userlistingbio unsetbio">No status set.</span>
+            }
+            else
+            {
+                <span class="userlistingbio">@User.Bio</span>
+            }
+        </div>
+    </div>
+}

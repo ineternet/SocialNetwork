@@ -1,0 +1,44 @@
+image: mcr.microsoft.com/dotnet/sdk:latest
+
+variables:
+  OBJECTS_DIRECTORY: 'obj'
+  NUGET_PACKAGES_DIRECTORY: '.nuget'
+  SOURCE_CODE_PATH: '*/*/'
+  MSSQL_HOST: mssql
+  ACCEPT_EULA: 'Y'
+  SA_PASSWORD: $SA_PASSWORD
+  DB_NAME: 'socialEfCi'
+  SQL_CONNSTR: 'Server=$MSSQL_HOST;Database=$DB_NAME;User id=sa;Password=$SA_PASSWORD;'
+
+cache:
+  key: "$CI_JOB_STAGE-$CI_COMMIT_REF_SLUG"
+  paths:
+    - '$SOURCE_CODE_PATH$OBJECTS_DIRECTORY/project.assets.json'
+    - '$SOURCE_CODE_PATH$OBJECTS_DIRECTORY/*.csproj.nuget.*'
+    - '$NUGET_PACKAGES_DIRECTORY'
+  policy: pull-push
+
+before_script:
+  - 'dotnet restore --packages $NUGET_PACKAGES_DIRECTORY'
+
+build:
+  stage: build
+  script:
+    - 'dotnet build --no-restore'
+
+unit:
+  stage: test
+  script:
+    - 'dotnet test --no-restore'
+
+integration:
+  stage: test
+  services:
+    - name: mcr.microsoft.com/mssql/server:2019-latest
+      alias: mssql
+  script:
+    - 'dotnet tool install dotnet-ef -g'
+    - 'export PATH="$PATH:/root/.dotnet/tools"'
+    - 'dotnet-ef migrations add CreateFromCi --project SocialModel'
+    - 'dotnet-ef database update --project SocialModel'
+    - 'dotnet run --no-restore --project SocialIntegrationTest'

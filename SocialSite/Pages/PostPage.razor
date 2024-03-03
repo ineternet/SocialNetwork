@@ -1,0 +1,10 @@
+@page "/post/{postid}"
+
+@if (PostData is null && RouteReturnedNull is null)
+{
+    <p>...</p>
+}
+else
+{
+    <PostDisplay post=@PostData notfound=@RouteReturnedNull/>
+}
